@@ -1,7 +1,11 @@
-import { FC } from "react";
-import { Navbar, NavigationLink, ToppingImage } from "../components";
+import { FC, useEffect } from "react";
+import { DeliveryCard, Navbar, NavigationLink, SectionTitle, ToppingImage } from "../components";
 
 export const Home: FC = (): JSX.Element => {
+  useEffect(() => {
+    document.title = "Home | DBAPizza";
+  }, []);
+  
   return (
     <div className="w-full md:w-[768px] lg:w-[1024px] xl:w-[1280px] mx-auto">
       <header className="w-full flex flex-col items-center overflow-hidden">
@@ -28,7 +32,18 @@ export const Home: FC = (): JSX.Element => {
         </div>
       </header>
 
-      <div className="mt-12 py-12 w-full"></div>
+      <main className="px-2 xl:px-0 mt-12 py-12 w-full">
+        <section className="w-full">
+          <SectionTitle mainTitle={true} content="Our Offerings" />
+          <SectionTitle mainTitle={false} content={["Your preferred food", <br />, "delivery companion"]} />
+
+          <div className="mx-auto w-[80%] sm:w-[90%] xl:w-[80%] grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 place-items-center gap-8">
+            <DeliveryCard src="delivery-1" title="Convenient Ordering" content={["Ordering food requires just a", <br />, "simple few steps."]} />
+            <DeliveryCard src="delivery-2" title="Quickest Delivery" content={["Consistently timely delivery,", <br />, "even faster."]} />
+            <DeliveryCard src="delivery-3" title="Superior Quality" content={["For us, quality is paramount,", <br />, "not just speed."]} />
+          </div>
+        </section>
+      </main>
     </div>
   );
 };
