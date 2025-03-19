@@ -1,7 +1,14 @@
-import { FC } from "react";
-import { Navbar, NavigationLink, ToppingImage } from "../components";
+import { FC, useEffect } from "react";
+import { DeliveryCard, Navbar, NavigationLink, PizzaCard, SectionTitle, Testimonials, ToppingImage } from "../components";
+import { usePizzas } from "../hooks";
 
 export const Home: FC = (): JSX.Element => {
+  const { loading, response } = usePizzas();
+
+  useEffect(() => {
+    document.title = "Home | DBAPizza";
+  }, []);
+  
   return (
     <div className="w-full md:w-[768px] lg:w-[1024px] xl:w-[1280px] mx-auto">
       <header className="w-full flex flex-col items-center overflow-hidden">
@@ -28,7 +35,52 @@ export const Home: FC = (): JSX.Element => {
         </div>
       </header>
 
-      <div className="mt-12 py-12 w-full"></div>
+      <main className="w-full px-2 xl:px-0 mt-12 py-12">
+        <section className="mx-auto w-[80%] sm:w-[90%] xl:w-[80%]">
+          <SectionTitle mainTitle={true}>Our Offerings</SectionTitle>
+          <SectionTitle mainTitle={false}>Your preferred food<br />delivery companion</SectionTitle>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 place-items-center gap-8">
+            <DeliveryCard src="delivery-1" title="Convenient Ordering">Ordering food requires just a<br />simple few steps.</DeliveryCard>
+            <DeliveryCard src="delivery-2" title="Quickest Delivery">Consistently timely delivery,<br />even faster.</DeliveryCard>
+            <DeliveryCard src="delivery-3" title="Superior Quality">For us, quality is paramount,<br />not just speed.</DeliveryCard>
+          </div>
+        </section>
+        
+        <section className="my-32 mx-auto w-[80%] sm:w-[90%] xl:w-full">
+          <SectionTitle mainTitle={true}>Our Selection</SectionTitle>
+          <SectionTitle mainTitle={false}>A menu that will always<br />capture your heart</SectionTitle>
+
+            {
+              (loading)
+                ? (<p>Loading...</p>)
+                : (<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {
+                      response?.pizzas.map((pizza) => (
+                        <PizzaCard key={pizza._id} {...pizza} />
+                      ))
+                    }
+                  </div>)
+            }
+        </section>
+
+        <section className="mx-auto w-[80%] sm:w-[90%] xl:w-full">
+          <SectionTitle mainTitle={true}>Customer Testimonials</SectionTitle>
+          <SectionTitle mainTitle={false}>What customers have<br />to say about us</SectionTitle>
+        
+          <div className="w-full h-[450px] flex flex-col md:flex-row gap-8 md:gap-4">
+            <div className="order-2 md:order-1 w-full md:w-1/2 h-full flex flex-col justify-center items-center gap-y-4">
+              <h3 className="text-sm md:text-base text-center font-light">Our success is the customer happiness tasting our pizzas.</h3>
+
+              <Testimonials />
+            </div>
+
+            <div className="order-1 md:order-2 w-full md:w-1/2 h-full">
+              <img src="assets/images/testimonials/testimonials-banner.png" alt="A chef carrying off some pizza ingredients" loading="lazy" className="w-full h-full object-contain"/>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
   );
 };
