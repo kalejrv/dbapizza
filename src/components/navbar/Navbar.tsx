@@ -1,10 +1,9 @@
-import { FC } from "react";
 import { Link } from "react-router-dom";
 import { useScreenMobile } from "../../hooks";
 import { MobileMenu } from "./MobileMenu";
 import { DesktopMenu } from "./DesktopMenu";
 
-export const Navbar: FC = (): JSX.Element => {
+export const Navbar = (): JSX.Element => {
   const { mobile } = useScreenMobile();
 
   return (

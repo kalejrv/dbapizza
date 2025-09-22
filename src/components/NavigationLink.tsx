@@ -1,8 +1,7 @@
-import { FC } from "react";
 import { Link } from "react-router-dom";
 import { NavigationLinkProps } from "../types";
 
-export const NavigationLink: FC<NavigationLinkProps> = ({ href, className, children }): JSX.Element => {
+export const NavigationLink = ({ href, className, children }: NavigationLinkProps): JSX.Element => {
   return (
     <Link
       to={href}

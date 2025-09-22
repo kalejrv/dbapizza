@@ -1,7 +1,9 @@
-export * from "./navbar/Navbar";
+export * from "./navbar";
+export * from "./page";
+export * from "./cards";
+
 export * from "./NavigationLink";
 export * from "./ToppingImage";
 export * from "./SectionTitle";
-export * from "./DeliveryCard";
-export * from "./PizzaCard";
+export * from "./cards/DeliveryCard.tsx";
 export * from "./Testimonials.tsx";

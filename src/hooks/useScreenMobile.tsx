@@ -1,22 +1,24 @@
-import { useEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useState } from "react"
 import { UseScreenMobile } from "../types";
+
+const MAX_MOBILE_SIZE_PX: number = 767;
 
 export const useScreenMobile = (): UseScreenMobile => {
   const [mobile, setMobile] = useState<boolean>(false);
   const [width, setWidth] = useState<number>(window.innerWidth);
 
-  useEffect(() => {
+  useLayoutEffect((): () => void => {
     const handleResize = (): void => setWidth(window.innerWidth);
 
     window.addEventListener("resize", handleResize);
 
-    return () => {
+    return (): void => {
       window.removeEventListener("resize", handleResize);
-    }
+    };
   }, []);
 
-  useEffect(() => {
-    if (width <= 767) {
+  useEffect((): void => {
+    if (width <= MAX_MOBILE_SIZE_PX) {
       setMobile(true);
       return;
     };
@@ -24,5 +26,8 @@ export const useScreenMobile = (): UseScreenMobile => {
     setMobile(false);
   }, [width]);
   
-  return { mobile };
+  return {
+    mobile,
+    width,
+  };
 };

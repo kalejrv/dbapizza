@@ -1,10 +1,10 @@
-import { FC } from "react";
 import Modal from "react-modal";
-import { PizzaCardProps } from "../types";
-import { NavigationLink } from "./NavigationLink";
-import { useModal, useScreenMobile } from "../hooks";
+import { PizzaCardProps } from "../../types";
+import { useModal, useScreenMobile } from "../../hooks";
+import { config } from "../../config";
+import { NavigationLink } from "../";
 
-export const PizzaCard: FC<PizzaCardProps> = ({ flavor, image, size, price }): JSX.Element => {
+export const PizzaCard = ({ flavor, image, size, price }: PizzaCardProps): JSX.Element => {
   const { modalIsOpen, closeModal, openModal } = useModal();
   const { mobile } = useScreenMobile();
 
@@ -24,12 +24,12 @@ export const PizzaCard: FC<PizzaCardProps> = ({ flavor, image, size, price }): J
       border: "none",
     },
   };
-
+  
   return (
     <>
       <div className="w-full flex flex-col items-center border-1 border-gray-200 rounded-2xl shadow-xl transition duration-300 hover:border-red-500">
         <div className="w-full h-[200px] bg-gradient-to-b from-black to-red-500 rounded-t-2xl">
-          <img src={`http://localhost:4000/api/v1/images/pizzas/${image}`} className="w-full h-full object-contain rounded-t-2xl" loading="lazy" />
+          <img src={`${config.APIBaseUrl}/images/pizzas/${image}`} className="w-full h-full object-contain rounded-t-2xl" loading="lazy" />
         </div>
 
         <div className="px-2 py-4 flex flex-col items-center text-center">
@@ -39,7 +39,9 @@ export const PizzaCard: FC<PizzaCardProps> = ({ flavor, image, size, price }): J
             <span className="text-xl">C$</span>{price}.00
           </strong>
           
-          <button className="mt-6 w-fit py-0.5 px-4 flex justify-center items-center gap-x-1 text-white text-base font-semibold border-1 bg-red-500 rounded-4xl hover:cursor-pointer" onClick={openModal}>Read more</button>
+          <button className="mt-6 w-fit py-0.5 px-4 flex justify-center items-center gap-x-1 text-white text-base font-semibold border-1 bg-red-500 rounded-4xl hover:cursor-pointer" onClick={openModal}>
+            Read more
+          </button>
         </div>
       </div>
 
@@ -51,7 +53,7 @@ export const PizzaCard: FC<PizzaCardProps> = ({ flavor, image, size, price }): J
       >
         <div className="w-full h-[480px] md:h-[350px] flex flex-col md:flex-row justify-center items-center rounded-2xl">
           <div className="w-full md:w-[55%] h-[180px] md:h-full bg-gradient-to-b from-black to-red-500 md:rounded-tl-2xl md:rounded-bl-2xl">
-            <img src={`http://localhost:4000/api/v1/images/pizzas/${image}`} className="w-full h-full object-contain md:rounded-tl-2xl md:rounded-bl-2xl"/>
+            <img src={`${config.APIBaseUrl}/images/pizzas/${image}`} className="w-full h-full object-contain md:rounded-tl-2xl md:rounded-bl-2xl"/>
           </div>
 
           <div className="w-full md:w-[45%] md:h-full flex-grow p-4 flex flex-col items-start justify-between">

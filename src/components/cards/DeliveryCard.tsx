@@ -1,7 +1,6 @@
-import { FC } from "react";
-import { DeliveryCardProps } from "../types";
+import { DeliveryCardProps } from "../../types";
 
-export const DeliveryCard: FC<DeliveryCardProps> = ({ src, title, children }): JSX.Element => {
+export const DeliveryCard = ({ src, title, children }: DeliveryCardProps): JSX.Element => {
   return (
     <div className="w-full pt-0 pb-4 flex flex-col items-center border-1 border-red-500 rounded-2xl shadow-xl">
       <div className="w-[200px] h-[200px]">

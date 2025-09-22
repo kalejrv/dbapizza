@@ -1,1 +1,1 @@
-export * from "./fetchFromAPI";
+export * from "./requestAPI";

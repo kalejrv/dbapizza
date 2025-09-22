@@ -1,6 +1,5 @@
-import { FC } from "react";
 import Slider from "react-slick";
-import { testimonials } from "../types";
+import { Testimonial, testimonials } from "../types";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -15,12 +14,12 @@ const sliderConfig: object = {
   autoplaySpeed: 8000,
 };
 
-export const Testimonials: FC = (): JSX.Element => {
+export const Testimonials = (): JSX.Element => {
   return (
     <div className="w-full">
       <Slider {...sliderConfig}>
         {
-          testimonials.map((testimonial) => (
+          testimonials.map((testimonial: Testimonial): JSX.Element => (
             <div key={testimonial.id}  className="w-full">
               <p className="text-base md:text-lg text-center md:text-end italic">{testimonial.text}</p>
 
