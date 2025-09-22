@@ -1,7 +1,6 @@
-import { FC } from "react";
 import { ToppingImageProps } from "../types";
 
-export const ToppingImage: FC<ToppingImageProps> = ({ topping, className }): JSX.Element => {
+export const ToppingImage = ({ topping, className }: ToppingImageProps): JSX.Element => {
   return (
     <div className={`
       absolute

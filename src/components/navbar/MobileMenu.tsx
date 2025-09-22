@@ -1,30 +1,30 @@
-import { FC, useState } from "react";
-import { NavLink } from "react-router-dom";
-import { HamburgerMenuButton } from "./HamburgerMenuButton";
-import { pages } from "../../types";
+import { useState } from "react";
+import { NavLink, NavLinkRenderProps } from "react-router-dom";
+import { HamburgerMenu } from "./HamburgerMenu";
+import { MenuIsOpen, Page, pages } from "../../types";
 import { NavigationLink } from "../";
 
-export const MobileMenu: FC = (): JSX.Element => {
-  const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
+export const MobileMenu = (): JSX.Element => {
+  const [menuIsOpen, setMenuIsOpen] = useState<MenuIsOpen>(false);
     
-  const handleClickMenu = (): void => setMenuIsOpen(!menuIsOpen);
+  const handleClick = (): void => setMenuIsOpen(!menuIsOpen);
 
   return (
     <>
-      <HamburgerMenuButton menuIsOpen={menuIsOpen} handleClickMenu={handleClickMenu} />
+      <HamburgerMenu menuIsOpen={menuIsOpen} handleClick={handleClick} />
       
-      {menuIsOpen && <div className="fixed inset-0 bg-black opacity-50 z-10" onClick={handleClickMenu}></div>}
+      {menuIsOpen && <div className="fixed inset-0 bg-black opacity-50 z-10" onClick={handleClick}></div>}
       
       <div className={`fixed top-0 bottom-0 px-2 py-3.5 w-1/2 sm:w-1/3 bg-white transition-all ease-in-out duration-500 z-20 ${menuIsOpen ? "right-0" : "-right-[100%]"}`}>
         <div className="h-full flex flex-col items-start gap-y-12">
-          <HamburgerMenuButton menuIsOpen={menuIsOpen} handleClickMenu={handleClickMenu} />
+          <HamburgerMenu menuIsOpen={menuIsOpen} handleClick={handleClick} />
 
           <nav className="w-full h-full flex flex-col justify-between items-center">
             <ul className="w-full flex flex-col items-center gap-y-6 text-xl font-semibold">
               {
-                pages.map(page => (
+                pages.map((page: Page): JSX.Element => (
                   <li key={page.name}>
-                    <NavLink to={page.url} className={({ isActive }) => isActive ? "text-red-500" : "text-black"}>{page.name}</NavLink>
+                    <NavLink to={page.url} className={({ isActive }: NavLinkRenderProps): string => isActive ? "text-red-500" : "text-black"}>{page.name}</NavLink>
                   </li>
                 ))
               }
