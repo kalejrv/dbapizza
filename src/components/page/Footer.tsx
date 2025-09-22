@@ -64,8 +64,8 @@ export const Footer = (): JSX.Element => {
         <div className="col-span-2 xl:col-span-3 flex flex-col items-start justify-center">
           <Link to="/" className="text-3xl text-red-500 font-logo font-bold">DBAPizza</Link>
 
-          <p className="mt-2 mb-4 text-sm md:text-base text-gray-500">"Our mission is to craft irresistibly delicious pizzas that bring people together, one slice at a time. We use only the freshest ingredients, hand-tossed dough, and time-honored recipes to create flavors that ignite joy."</p>
-
+          <p className="mt-2 mb-4 text-sm md:text-base text-gray-500">Our mission is to craft irresistibly delicious pizzas that bring people together, one slice at a time. We use only the freshest ingredients, hand-tossed dough, and time-honored recipes to create flavors that ignite joy.</p>
+          
           <div className="flex justify-start items-center gap-x-4">
             <Link to="">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width={22}>
