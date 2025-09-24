@@ -1,15 +1,3 @@
-
-
-type Options = {
-  method?: Method;
-  headers?: Record<string, string>;
-  signal: AbortSignal;
-  body?: BodyInit;
+export interface PizzaLoader {
+  id: string;
 };
-
-/* export interface FetchFromAPI {
-  url: string;
-  token?: string;
-  options: Options;
-};
- */

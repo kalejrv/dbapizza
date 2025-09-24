@@ -1,5 +1,5 @@
 export * from "./navbar";
-export * from "./page";
+export * from "./pages";
 export * from "./cards";
 
 export * from "./NavigationLink";
