@@ -39,20 +39,20 @@ export const Contact = (): JSX.Element => {
             </div>
           </div>
 
-          <div className="w-full md:w-2/3 p-4 md:bg-none rounded-2xl">
+          <div className="w-full md:w-2/3 pt-4 md:bg-none rounded-2xl">
             <div className="w-full flex flex-col">
               <h2 className="text-3xl font-bold">Get in Touch</h2>
               <p className="text-gray-500">Feel free to drop us a line below.</p>
             </div>
 
-            <form className="mt-4 w-full grid grid-cols-1 md:grid-cols-2 gap-4" onSubmit={handleSubmit}>
+            <form className="mt-4 p-4 w-full grid grid-cols-1 md:grid-cols-2 gap-4 border-1 border-black rounded-2xl" onSubmit={handleSubmit}>
               <label htmlFor="name" className="w-full col-span-1 col-end-2 md:col-span-1 text-[12px] text-gray-500">
                 Name:
                 <input
                   type="text"
                   id="name"
                   placeholder="E.g: Kevin Reyes."
-                  className="w-full p-2 text-sm text-black border-1 border-gray-500 outline-none rounded-lg"
+                  className="w-full p-2 text-sm text-black border-1 border-black outline-none rounded-lg"
                 />
               </label>
 
@@ -62,7 +62,7 @@ export const Contact = (): JSX.Element => {
                   type="email"
                   id="email"
                   placeholder="E.g: kevin@correo.com."
-                  className="w-full p-2 text-sm text-black border-1 border-gray-500 outline-none rounded-lg"
+                  className="w-full p-2 text-sm text-black border-1 border-black outline-none rounded-lg"
                 />
               </label>
               
@@ -73,7 +73,7 @@ export const Contact = (): JSX.Element => {
                   id="message"
                   rows={6}
                   placeholder="E.g: I'd like to make a reservation for my birthday!"
-                  className="w-full p-2 text-sm text-black border-1 border-gray-500 outline-none rounded-lg"
+                  className="w-full p-2 text-sm text-black border-1 border-black outline-none rounded-lg"
                 >
                 </textarea>
               </label>
@@ -81,7 +81,7 @@ export const Contact = (): JSX.Element => {
               <input
                 type="submit"
                 value="Send"
-                className="col-span-1 col-end-2 md:col-end-3 p-2 text-base text-white bg-red-500 rounded-full hover:cursor-pointer"
+                className="col-span-1 col-end-2 md:col-end-3 p-2 text-lg text-white font-bold bg-red-500 rounded-full hover:cursor-pointer"
               />
             </form>
           </div>
