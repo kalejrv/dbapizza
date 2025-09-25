@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { About, Contact, Error, Home, Pizzas, Signin, Signup } from "../pages";
+import { About, Contact, Error, Home, NotFound, Pizzas, Signin, Signup } from "../pages";
 import { Pizza, loader as pizzaLoader, PizzaIndex } from "../components";
 
 export const router = createBrowserRouter([
@@ -39,5 +39,9 @@ export const router = createBrowserRouter([
   {
     path: "/signup",
     element: <Signup />
-  }
+  },
+  {
+    path: "*",
+    element: <NotFound />
+  },
 ]);

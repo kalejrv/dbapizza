@@ -1,24 +1,37 @@
 import axios, { AxiosResponse } from "axios";
 import { APIResponse, RequestAPIProps } from "../types";
+import { config } from "../config";
 
-export const requestAPI = async <T>({ url, method, data }: RequestAPIProps): Promise<APIResponse<T>> => {  
+export const requestAPI = async <T>({ url, method, userData }: RequestAPIProps): Promise<APIResponse<T>> => {  
   const api = axios.create({
+    baseURL: config.APIBaseUrl,
     method,
-    data,
   });
 
   try {
-    const { data: { status, data } }: AxiosResponse<APIResponse<T>> = await api(url);
-    
-    if (status !== "OK") {
-      throw new Error(`Error: ${status}.`);
-    };
-    
+    const { data: { status, data } } : AxiosResponse<APIResponse<T>> = await api(url, {
+      data: userData,
+    });
+
     return {
       status,
       data,
     };
   } catch (error: any) {
-    throw new Error(error.message);
+    if (axios.isAxiosError(error) && error.response) {
+      const { status, data } = error.response.data as APIResponse<T>;
+      
+      return {
+        status,
+        data,
+      };
+    };
+
+    return {
+      status: "ERROR",
+      data: {
+        msg: error.message,
+      } as unknown as T,
+    };
   };
 };
