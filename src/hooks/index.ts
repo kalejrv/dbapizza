@@ -1,3 +1,4 @@
 export * from "./useScreenMobile";
-export * from "./useGetPizzas";
 export * from "./useModal";
+export * from "./useGetPizzas";
+export * from "./useGetPizza";

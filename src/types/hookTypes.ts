@@ -6,17 +6,27 @@ export type UseScreenMobile = {
   width: number;
 };
 
-/* UseGetPizzas. */
-export interface UseGetPizzasProps extends QueryParams { };
-export type UseGetPizzas = {
-  loading: boolean;
-  error: string;
-  response: APIResponse<Pagination<Pizza>>;
-};
-
 /* UseModal. */
 export interface UseModal {
   modalIsOpen: boolean;
   openModal(): void;
   closeModal(): void;
+};
+
+/* UseGetPizzas. */
+interface FetchPizzas {
+  loading: boolean;
+  error: string;
+};
+export interface UseGetPizzasProps extends QueryParams { };
+export interface UseGetPizzas extends FetchPizzas {
+  response: APIResponse<Pagination<Pizza>>;
+};
+
+/* UseGetPizza. */
+export interface UseGetPizzaProps {
+  id: string;
+};
+export interface UseGetPizza extends FetchPizzas {
+  response: APIResponse<Pizza> | null;
 };
