@@ -103,3 +103,9 @@ export const testimonials: Testimonial[] = [
     }
   },
 ];
+
+/* Pizza link. */
+export interface PizzaLinkProps {
+  id: string;
+  name: string;
+};
