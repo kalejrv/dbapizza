@@ -1,3 +1,5 @@
+export * from "./admin";
+
 export * from "./Home";
 export * from "./Pizzas";
 export * from "./About";

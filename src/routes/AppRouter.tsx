@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import { About, Contact, Error, Home, NotFound, Pizzas, Signin, Signup } from "../pages";
-import { Pizza, loader as pizzaLoader, PizzaIndex } from "../components";
+import { About, Contact, Dasboard, Error, Home, NotFound, Pizzas, Signin, Signup } from "../pages";
+import { Pizza, loader as pizzaLoader, PizzaIndex, AdminProtectedRoute } from "../components";
 
 export const router = createBrowserRouter([
   {
@@ -39,6 +39,15 @@ export const router = createBrowserRouter([
   {
     path: "/signup",
     element: <Signup />
+  },
+  {
+    element: <AdminProtectedRoute />,
+    children: [
+      {
+        path: "/admin/dashboard",
+        element: <Dasboard />,
+      },
+    ],
   },
   {
     path: "*",
