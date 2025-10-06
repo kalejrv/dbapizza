@@ -1,6 +1,7 @@
 export * from "./navbar";
 export * from "./pages";
 export * from "./cards";
+export * from "./loader";
 
 export * from "./NavigationLink";
 export * from "./ToppingImage";

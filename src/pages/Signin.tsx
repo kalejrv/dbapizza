@@ -1,6 +1,84 @@
-import { Link } from "react-router-dom";
+import { useEffect, FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Modal from "react-modal";
+import { useDispatch } from "react-redux";
+import { login } from "../state/slices/authSlice";
+import { SignIn } from "../types";
+import { useAuthUser, useForm, useModal } from "../hooks";
+import { Loader } from "../components";
+
+const initialValue: SignIn = { email: "", password: "" };
+const modalStyles: object = {
+  overlay: {
+    backgroundColor: "rgba(0 0 0 / 0.5)",
+  },
+  content: {
+    width: "fit-content",
+    padding: 0,
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    transform: 'translate(-50%, -50%)',
+    borderRadius: "1rem",
+    border: "none",
+  },
+};
+const timeout: number = 2500;
 
 export const Signin = (): JSX.Element => {
+  const { data, handleInputChange, resetForm } = useForm<SignIn>(initialValue);
+  const { setUserData, loading, response } = useAuthUser({ url: "/auth/signin" });
+  const { modalIsOpen, openModal, closeModal, modalOpenCounter, incrementModalOpenCounter } = useModal();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+    
+    setUserData(data);
+    openModal();
+    incrementModalOpenCounter();
+  };
+
+  useEffect((): (() => void) | undefined => {
+    if (loading || !response) return;
+    
+    const { status, data } = response;
+    const { token, user } = data;
+
+    const timer = setTimeout((): void => {
+      if ((status !== "OK") && (modalOpenCounter > 0)) {
+        closeModal();
+        return;
+      };
+      
+      if (token) {
+        resetForm();
+        closeModal();
+        dispatch(login({
+          isAuthenticated: true,
+          user,
+          token,
+        }));
+
+        switch (user.role) {
+          case "admin":
+            navigate("/admin/dashboard");
+            break;
+          case "client":
+            navigate("/pizzas");
+            break;
+          default:
+            navigate("/pizzas");
+            break;
+        };
+      };
+    }, timeout);
+
+    return (): void => clearTimeout(timer);
+  }, [loading, response, modalOpenCounter]);
+  
   return (
     <div className="mx-auto w-full md:w-[768px] lg:w-[1024px] xl:w-[1280px] flex flex-col items-center">
       <header className="p-2 w-full flex justify-start">
@@ -9,7 +87,7 @@ export const Signin = (): JSX.Element => {
 
       <main className="w-[80%] sm:w-[90%] lg:w-[60%] h-[calc(100vh-52px)] flex justify-center items-center">
         <div className="w-full md:w-[350px] h-fit flex flex-col gap-y-2">
-          <form action="" className="w-full p-4 border-1 border-black rounded-2xl">
+          <form className="w-full p-4 border-1 border-black rounded-2xl" onSubmit={handleSubmit}>
             <h2 className="text-3xl font-bold">Sign In</h2>
 
             <label htmlFor="email" className="mt-6 w-full flex flex-col items-start gap-y-1 text-[12px] text-gray-500">
@@ -19,7 +97,10 @@ export const Signin = (): JSX.Element => {
                 name="email"
                 id="email"
                 placeholder="E.g: kevin@gmail.com"
-                className="w-full p-2 text-black border-1 border-black outline-none rounded-lg"
+                className={`w-full p-2 text-black border-1 border-black outline-none rounded-lg ${loading && "border-gray-500 opacity-[50%] hover:cursor-not-allowed"}`}
+                onChange={handleInputChange}
+                value={data.email}
+                disabled={loading}
               />
             </label>
 
@@ -30,14 +111,18 @@ export const Signin = (): JSX.Element => {
                 name="password"
                 id="password"
                 placeholder="E.g: ********"
-                className="w-full p-2 text-black border-1 border-black outline-none rounded-lg"
+                className={`w-full p-2 text-black border-1 border-black outline-none rounded-lg ${loading && "border-gray-500 opacity-[50%] hover:cursor-not-allowed"}`}
+                onChange={handleInputChange}
+                value={data.password}
+                disabled={loading}
               />
             </label>
 
             <input
               type="submit"
               value="Log In"
-              className="w-full p-2 text-lg text-white font-bold bg-red-500 rounded-full hover:cursor-pointer"
+              className={`w-full p-2 text-lg text-white font-bold bg-red-500 rounded-full hover:cursor-pointer ${loading && "opacity-[50%] hover:cursor-not-allowed"}`}
+              disabled={loading}
             />
           </form>
 
@@ -52,6 +137,29 @@ export const Signin = (): JSX.Element => {
           </p>
         </div>
       </main>
+
+      <Modal
+        isOpen={modalIsOpen}
+        style={modalStyles}
+      >
+          <div className="p-4 md:p-8 w-[350px] md:w-[600px] flex flex-col justify-center items-center">
+            {
+              loading
+                ? (<Loader />)
+                : (
+                  <div className="flex flex-col justify-center items-center gap-y-4">
+                    {
+                      (response?.status !== "OK")
+                        ? (<img src="assets/icons/error.svg" className="w-[48px] md:w-[54px] object-contain" />)
+                        : (<img src="assets/icons/check.svg" className="w-[48px] md:w-[54px] object-contain" />)
+                     }
+                    
+                    <h2 className="text-lg md:text-xl text-center">{response?.data.msg}</h2>
+                  </div>
+                )
+            }
+          </div>
+      </Modal>
     </div>
   );
 };

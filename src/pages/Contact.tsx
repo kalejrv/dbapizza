@@ -45,7 +45,7 @@ export const Contact = (): JSX.Element => {
               <p className="text-gray-500">Feel free to drop us a line below.</p>
             </div>
 
-            <form className="mt-4 p-4 w-full grid grid-cols-1 md:grid-cols-2 gap-4 border-1 border-black rounded-2xl" onSubmit={handleSubmit}>
+            <form className="mt-4 w-full grid grid-cols-1 md:grid-cols-2 gap-4 rounded-2xl" onSubmit={handleSubmit}>
               <label htmlFor="name" className="w-full col-span-1 col-end-2 md:col-span-1 text-[12px] text-gray-500">
                 Name:
                 <input
