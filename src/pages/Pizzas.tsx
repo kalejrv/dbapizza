@@ -9,13 +9,13 @@ export const Pizzas = (): JSX.Element => {
 
   return (
     <div className="mx-auto w-full md:w-[768px] lg:w-[1024px] xl:w-[1280px]">
-      <header className="w-full flex flex-col items-center overflow-hidden">
-        <Navbar />
-
-        <div className="mt-12 mb-4 text-center flex flex-col items-center">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold">Enjoy each of our<br /> tasty pizzas!</h1>
-        </div>
-      </header>
+        <header className="w-full flex flex-col items-center overflow-hidden">
+          <Navbar />
+          
+          <div className="mt-12 mb-4 text-center flex flex-col items-center">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold">Enjoy each of our<br /> tasty pizzas!</h1>
+          </div>
+        </header>
       
       <div className="mt-12 mb-32 mx-auto w-[80%] sm:w-[90%] xl:w-[80%] gap-x-4">
         <section className="w-full">

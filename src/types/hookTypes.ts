@@ -1,4 +1,10 @@
-import { APIResponse, Pagination, Pizza, QueryParams } from "./APITypes";
+import { Dispatch, SetStateAction } from "react";
+import { APIResponse, Pagination, Pizza, QueryParams, UserLogged } from "./APITypes";
+
+interface UseHook {
+  loading: boolean;
+  error: string;
+};
 
 /* UseScreenMobile. */
 export type UseScreenMobile = {
@@ -11,15 +17,13 @@ export interface UseModal {
   modalIsOpen: boolean;
   openModal(): void;
   closeModal(): void;
+  modalOpenCounter: number;
+  incrementModalOpenCounter(): void;
 };
 
 /* UseGetPizzas. */
-interface FetchPizzas {
-  loading: boolean;
-  error: string;
-};
 export interface UseGetPizzasProps extends QueryParams { };
-export interface UseGetPizzas extends FetchPizzas {
+export interface UseGetPizzas extends UseHook {
   response: APIResponse<Pagination<Pizza>>;
 };
 
@@ -27,6 +31,25 @@ export interface UseGetPizzas extends FetchPizzas {
 export interface UseGetPizzaProps {
   id: string;
 };
-export interface UseGetPizza extends FetchPizzas {
+export interface UseGetPizza extends UseHook {
   response: APIResponse<Pizza> | null;
+};
+
+/* UseForm. */
+export interface UseForm<T> {
+  data: T;
+  handleInputChange(event: React.ChangeEvent<HTMLInputElement>): void;
+  resetForm(): void;
+};
+
+/* UseAuthUser. */
+export type UserData = {
+  [key: string]: string,
+};
+export interface UseAuthUserProps {
+  url: string;
+};
+export interface UseAuthUser extends UseHook {
+  setUserData: Dispatch<SetStateAction<UserData | null>>;
+  response: APIResponse<UserLogged> | null;
 };

@@ -1,17 +1,25 @@
 /* Models. */
+// User.
+export type User = {
+  firstName: string;
+  lastName: string;
+  address: string;
+  phone: string;
+  email: string;
+  password: string;
+  role: string;
+};
 // Flavor.
 type Flavor = {
   name: string;
   description: string;
   price: number;
 };
-
 // Size.
 type Size = {
   name: string;
   price: string;
 };
-
 // Pizza.
 export interface Pizza {
   _id: string;
@@ -50,4 +58,13 @@ export interface APIResponse<T> {
 export interface QueryParams {
   page: number;
   limit: number;
+};
+
+/* Authentication. */
+export interface SignIn extends Pick<User, 'email' | 'password'> { };
+export interface SignUp extends Omit<User, 'role'> { };
+export type UserLogged = {
+  msg: string;
+  user: Omit<User, 'password'>;
+  token?: string;
 };
