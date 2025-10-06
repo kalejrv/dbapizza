@@ -1,6 +1,6 @@
 /* Models. */
 // User.
-type User = {
+export type User = {
   firstName: string;
   lastName: string;
   address: string;
@@ -65,6 +65,6 @@ export interface SignIn extends Pick<User, 'email' | 'password'> { };
 export interface SignUp extends Omit<User, 'role'> { };
 export type UserLogged = {
   msg: string;
-  role: string;
+  user: Omit<User, 'password'>;
   token?: string;
 };

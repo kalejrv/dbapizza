@@ -1,9 +1,10 @@
 import { FormEvent, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Modal from "react-modal";
-import { useForm } from "../hooks/useForm";
+import { useDispatch } from "react-redux";
+import { login } from "../state/slices/authSlice";
 import { SignUp } from "../types";
-import { useAuthUser, useModal } from "../hooks";
+import { useAuthUser, useForm, useModal } from "../hooks";
 import { Loader } from "../components";
 
 const initialValue: SignUp = { firstName: "", lastName: "", address: "", phone: "", email: "", password: ""  };
@@ -30,6 +31,7 @@ export const Signup = (): JSX.Element => {
   const { setUserData, loading, response } = useAuthUser ({ url: "/auth/signup" });
   const { modalIsOpen, openModal, closeModal, modalOpenCounter, incrementModalOpenCounter } = useModal();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
@@ -42,17 +44,25 @@ export const Signup = (): JSX.Element => {
   useEffect((): (() => void) | undefined => {
     if (loading || !response) return;
 
+    const { status, data } = response;
+    const { token, user} = data;
+
     const timer = setTimeout((): void => {
-      if ((response.status !== "CREATED") && (modalOpenCounter > 0)) {
+      if ((status !== "CREATED") && (modalOpenCounter > 0)) {
         closeModal();
         return;
       };
       
-      if (response.data.token) {
+      if (token) {
         resetForm();
         closeModal();
+        dispatch(login({
+          isAuthenticated: true,
+          user,
+          token,
+        }));
 
-        switch (response.data.role) {
+        switch (user.role) {
           case "client":
             navigate("/pizzas");
             break;
