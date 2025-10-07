@@ -53,3 +53,9 @@ export interface UseAuthUser extends UseHook {
   setUserData: Dispatch<SetStateAction<UserData | null>>;
   response: APIResponse<UserLogged> | null;
 };
+
+/* UseMenu. */
+export interface UseMenu {
+  menuIsOpen: boolean;
+  setMenuIsOpen: Dispatch<SetStateAction<boolean>>;
+};

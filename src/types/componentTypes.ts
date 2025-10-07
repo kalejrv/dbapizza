@@ -109,3 +109,13 @@ export interface PizzaLinkProps {
   id: string;
   name: string;
 };
+
+/* Sidebar link. */
+export interface SidebarLinkProps extends HOC {
+  href: string;
+};
+
+/* Sidebar menu. */
+export interface SidebarMenuProps extends HOC {
+  name: string;
+};
