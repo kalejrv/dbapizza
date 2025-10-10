@@ -2,10 +2,14 @@ import axios, { AxiosResponse } from "axios";
 import { APIResponse, RequestAPIProps } from "../types";
 import { config } from "../config";
 
-export const requestAPI = async <T>({ url, method, userData }: RequestAPIProps): Promise<APIResponse<T>> => {  
+export const requestAPI = async <T>({ url, method, token, userData }: RequestAPIProps): Promise<APIResponse<T>> => {  
   const api = axios.create({
     baseURL: config.APIBaseUrl,
     method,
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    }
   });
 
   try {

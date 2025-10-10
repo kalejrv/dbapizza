@@ -4,5 +4,6 @@ import { UserData } from "./hookTypes";
 export interface RequestAPIProps {
   url: string;
   method: string;
+  token?: string;
   userData?: UserData;
 };

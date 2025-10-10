@@ -119,3 +119,21 @@ export interface SidebarLinkProps extends HOC {
 export interface SidebarMenuProps extends HOC {
   name: string;
 };
+
+/* Overview card. */
+export interface OverviewCardProps {
+  name: string;
+  loading: boolean;
+  totalItems: number | undefined;
+  currentMonthItemsCount: number;
+  currentMonthItemsText: string;
+  growthRate: number;
+};
+
+/* Loader. */
+export interface LoaderProps extends Pick<HOC, 'className'> { };
+
+/* Section heading. */
+export interface SectionHeadingProps extends Pick<HOC, 'className'> {
+  heading: string,
+};

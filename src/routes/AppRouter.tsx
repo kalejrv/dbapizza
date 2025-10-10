@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { About, Contact, Dasboard, Error, Home, NotFound, Pizzas, Signin, Signup } from "../pages";
+import { About, Contact, Dasboard, Error, Home, Main, NotFound, Pizzas, Signin, Signup } from "../pages";
 import { Pizza, loader as pizzaLoader, PizzaIndex, AdminProtectedRoute } from "../components";
 
 export const router = createBrowserRouter([
@@ -46,6 +46,12 @@ export const router = createBrowserRouter([
       {
         path: "/admin/dashboard",
         element: <Dasboard />,
+        children: [
+          {
+            index: true,
+            element: <Main />
+          }
+        ]
       },
     ],
   },

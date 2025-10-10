@@ -1,6 +1,7 @@
 /* Models. */
 // User.
 export type User = {
+  _id: string;
   firstName: string;
   lastName: string;
   address: string;
@@ -28,6 +29,14 @@ export interface Pizza {
   image: string;
   price: number;
 };
+// Order.
+export type Order = {
+  _id: string;
+  user: object;
+  items: object[];
+  status: object;
+  total: number;
+};
 
 /* Pagination. */
 export interface Pagination<T> {
@@ -37,6 +46,38 @@ export interface Pagination<T> {
   currentItemsQuantity: number;
   currentPage: number;
   totalPages: number;
+};
+// Query params.
+export interface PaginationQueryParams {
+  page: number;
+  limit: number;
+};
+
+/* Stats. */
+export interface Stats {
+  year: number;
+  month: number;
+  items: {
+    currentMonthItemsCount: number;
+    lastMonthItemsCount: number;
+    itemsGrowthRate: number;
+    totalItemsCount: number;
+  };
+};
+// Query params.
+export interface StatsQueryParams {
+  year: number;
+  month: number;
+};
+// Models stats.
+export interface UserStats extends Stats { };
+export interface OrderStats extends Stats {
+  sales: {
+    currentMonthSalesAmount: number,
+    lastMonthSalesAmount: number,
+    salesGrowthRate: number,
+    totalSalesAmount: number,
+  };
 };
 
 /* HTTP methods. */
@@ -49,15 +90,10 @@ export enum Method {
 };
 
 /* API response. */
-export interface APIResponse<T> {
+export type APIResponse<T> = {
   status: string;
-  data: T;
-};
-
-/* API request. */
-export interface QueryParams {
-  page: number;
-  limit: number;
+  msg?: string;
+  data?: T;
 };
 
 /* Authentication. */
@@ -68,3 +104,17 @@ export type UserLogged = {
   user: Omit<User, 'password'>;
   token?: string;
 };
+
+/* RTK. */
+// Tags.
+export enum TagType {
+  Users = "Users",
+  Pizzas = "Pizzas",
+  Orders = "Orders",
+};
+export type Tag = {
+  type: TagType;
+  id: string;
+};
+// Cache time.
+export const LIVE_CACHE_TIME: number = 300; /* 5 minutes. */

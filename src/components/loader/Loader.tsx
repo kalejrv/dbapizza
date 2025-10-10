@@ -1,7 +1,8 @@
+import { LoaderProps } from "../../types";
 import "./loader.css";
 
-export const Loader = (): JSX.Element => {
+export const Loader = ({ className }: LoaderProps): JSX.Element => {
   return (
-    <div className="loader"></div>
+    <div className={`loader ${className}`}></div>
   );
 };
