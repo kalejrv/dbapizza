@@ -1,16 +1,14 @@
-import { ReactNode } from "react";
-import { Pizza } from "./APITypes";
+import { Pizza } from "../data";
+import { HOC } from "./globalTypes";
 
-/* Mobile menu. */
+/* Navbar menu. */
 export type MenuIsOpen = boolean;
-
-/* Hamburger menu. */
 export interface HamburgerMenuProps {
   menuIsOpen: MenuIsOpen;
   handleClick: () => void;
 };
 
-/* Pages. */
+/* Page. */
 export type Page = {
   url: string;
   name: string;
@@ -33,12 +31,6 @@ export const pages: Page[] = [
     name: "Contact",
   },
 ];
-
-/* Global component props. */
-interface HOC {
-  className?: string;
-  children: ReactNode;
-};
 
 /* Navigation link. */
 export interface NavigationLinkProps extends HOC {
@@ -108,32 +100,4 @@ export const testimonials: Testimonial[] = [
 export interface PizzaLinkProps {
   id: string;
   name: string;
-};
-
-/* Sidebar link. */
-export interface SidebarLinkProps extends HOC {
-  href: string;
-};
-
-/* Sidebar menu. */
-export interface SidebarMenuProps extends HOC {
-  name: string;
-};
-
-/* Overview card. */
-export interface OverviewCardProps {
-  name: string;
-  loading: boolean;
-  totalItems: number | undefined;
-  currentMonthItemsCount: number;
-  currentMonthItemsText: string;
-  growthRate: number;
-};
-
-/* Loader. */
-export interface LoaderProps extends Pick<HOC, 'className'> { };
-
-/* Section heading. */
-export interface SectionHeadingProps extends Pick<HOC, 'className'> {
-  heading: string,
 };

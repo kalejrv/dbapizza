@@ -1,4 +1,4 @@
-import { UserData } from "./hookTypes";
+import { UserData } from "../hooks";
 
 /* Request API. */
 export interface RequestAPIProps {
