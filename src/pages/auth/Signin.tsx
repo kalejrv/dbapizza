@@ -2,66 +2,47 @@ import { useEffect, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 import { useDispatch } from "react-redux";
-import { login } from "../state/slices/authSlice";
-import { SignIn } from "../types";
-import { useAuthUser, useForm, useModal } from "../hooks";
-import { Loader } from "../components";
+import { login } from "../../state/slices";
+import { useSignInMutation } from "../../state/services";
+import { APIResponse, modalStyles, SignIn, TIMEOUT_TO_CLOSE_MODAL, UserLogged } from "../../types";
+import { useForm, useModal } from "../../hooks";
+import { Loader } from "../../components";
+import { showErrorMessage } from "../../helpers";
 
 const initialValue: SignIn = { email: "", password: "" };
-const modalStyles: object = {
-  overlay: {
-    backgroundColor: "rgba(0 0 0 / 0.5)",
-  },
-  content: {
-    width: "fit-content",
-    padding: 0,
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    transform: 'translate(-50%, -50%)',
-    borderRadius: "1rem",
-    border: "none",
-  },
-};
-const timeout: number = 2500;
 
 export const Signin = (): JSX.Element => {
-  const { data, handleInputChange, resetForm } = useForm<SignIn>(initialValue);
-  const { setUserData, loading, response } = useAuthUser({ url: "/auth/signin" });
-  const { modalIsOpen, openModal, closeModal, modalOpenCounter, incrementModalOpenCounter } = useModal();
+  const { formData, handleInputChange, resetForm } = useForm<SignIn>(initialValue);
+  const [signIn, { data: signInResponse, isLoading, isError, error }] = useSignInMutation();
+  const { modalIsOpen, openModal, closeModal } = useModal();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
+  
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     
-    setUserData(data);
     openModal();
-    incrementModalOpenCounter();
+
+    try {
+      await signIn(formData).unwrap();
+    } catch (error: any) {
+      console.log(error.message);
+    };
   };
 
   useEffect((): (() => void) | undefined => {
-    if (loading || !response) return;
-    
-    const { status, data } = response;
-    const { token, user } = data;
+    if (!signInResponse && !isError) return;
 
     const timer = setTimeout((): void => {
-      if ((status !== "OK") && (modalOpenCounter > 0)) {
-        closeModal();
-        return;
-      };
+      closeModal();
       
-      if (token) {
-        resetForm();
-        closeModal();
-        dispatch(login({
-          isAuthenticated: true,
-          user,
-          token,
-        }));
+      const { status, data } = signInResponse as APIResponse<UserLogged>;
+      if (status === "OK") {
+        const { user, token } = data as UserLogged;
 
+        dispatch(login({ isAuthenticated: true, user, token }));
+        resetForm();
+        
         switch (user.role) {
           case "admin":
             navigate("/admin/dashboard");
@@ -74,10 +55,10 @@ export const Signin = (): JSX.Element => {
             break;
         };
       };
-    }, timeout);
+    }, TIMEOUT_TO_CLOSE_MODAL);
 
     return (): void => clearTimeout(timer);
-  }, [loading, response, modalOpenCounter]);
+  }, [signInResponse, isError]);
   
   return (
     <div className="mx-auto w-full md:w-[768px] lg:w-[1024px] xl:w-[1280px] flex flex-col items-center">
@@ -97,10 +78,10 @@ export const Signin = (): JSX.Element => {
                 name="email"
                 id="email"
                 placeholder="E.g: kevin@gmail.com"
-                className={`w-full p-2 text-black border-1 border-black outline-none rounded-lg ${loading && "border-gray-500 opacity-[50%] hover:cursor-not-allowed"}`}
+                className={`w-full p-2 text-black border-1 border-black outline-none rounded-lg ${isLoading && "border-gray-500 opacity-[50%] hover:cursor-not-allowed"}`}
                 onChange={handleInputChange}
-                value={data.email}
-                disabled={loading}
+                value={formData.email}
+                disabled={isLoading}
               />
             </label>
 
@@ -111,18 +92,17 @@ export const Signin = (): JSX.Element => {
                 name="password"
                 id="password"
                 placeholder="E.g: ********"
-                className={`w-full p-2 text-black border-1 border-black outline-none rounded-lg ${loading && "border-gray-500 opacity-[50%] hover:cursor-not-allowed"}`}
+                className={`w-full p-2 text-black border-1 border-black outline-none rounded-lg ${isLoading && "border-gray-500 opacity-[50%] hover:cursor-not-allowed"}`}
                 onChange={handleInputChange}
-                value={data.password}
-                disabled={loading}
+                disabled={isLoading}
               />
             </label>
 
             <input
               type="submit"
               value="Log In"
-              className={`w-full p-2 text-lg text-white font-bold bg-red-500 rounded-full hover:cursor-pointer ${loading && "opacity-[50%] hover:cursor-not-allowed"}`}
-              disabled={loading}
+              className={`w-full p-2 text-lg text-white font-bold bg-red-500 rounded-full hover:cursor-pointer ${isLoading && "opacity-[50%] hover:cursor-not-allowed"}`}
+              disabled={isLoading}
             />
           </form>
 
@@ -142,23 +122,26 @@ export const Signin = (): JSX.Element => {
         isOpen={modalIsOpen}
         style={modalStyles}
       >
-          <div className="p-4 md:p-8 w-[350px] md:w-[600px] flex flex-col justify-center items-center">
-            {
-              loading
-                ? (<Loader />)
-                : (
+        <div className="p-4 md:p-8 w-[350px] md:w-[600px] flex flex-col justify-center items-center">
+          {
+            isLoading
+              ? (<Loader className="w-[42px] h-[42px] md:w-[44px] md:h-[44px] border-3 md:border-5 border-white border-l-red-500 border-b-red-500" />)
+              : (
                   <div className="flex flex-col justify-center items-center gap-y-4">
                     {
-                      (response?.status !== "OK")
+                      (signInResponse?.status !== "OK")
                         ? (<img src="assets/icons/error.svg" className="w-[48px] md:w-[54px] object-contain" />)
                         : (<img src="assets/icons/check.svg" className="w-[48px] md:w-[54px] object-contain" />)
-                     }
+                    }
                     
-                    <h2 className="text-lg md:text-xl text-center">{response?.data.msg}</h2>
+                    <h2 className="text-lg md:text-xl text-center">
+                      {isError && showErrorMessage(error as any)}
+                      {signInResponse?.data?.msg}
+                    </h2>
                   </div>
-                )
-            }
-          </div>
+              )
+          }
+        </div>
       </Modal>
     </div>
   );

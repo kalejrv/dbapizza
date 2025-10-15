@@ -1,5 +1,5 @@
 export interface UseForm<T> {
-  data: T;
+  formData: T;
   handleInputChange(event: React.ChangeEvent<HTMLInputElement>): void;
   resetForm(): void;
 };

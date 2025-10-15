@@ -2,65 +2,46 @@ import { FormEvent, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 import { useDispatch } from "react-redux";
-import { login } from "../state/slices/authSlice";
-import { SignUp } from "../types";
-import { useAuthUser, useForm, useModal } from "../hooks";
-import { Loader } from "../components";
+import { login } from "../../state/slices";
+import { useSignUpMutation } from "../../state/services";
+import { APIResponse, modalStyles, SignUp, TIMEOUT_TO_CLOSE_MODAL, UserLogged } from "../../types";
+import { useForm, useModal } from "../../hooks";
+import { Loader } from "../../components";
+import { showErrorMessage } from "../../helpers";
 
 const initialValue: SignUp = { firstName: "", lastName: "", address: "", phone: "", email: "", password: ""  };
-const modalStyles: object = {
-  overlay: {
-    backgroundColor: "rgba(0 0 0 / 0.5)",
-  },
-  content: {
-    width: "fit-content",
-    padding: 0,
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    transform: 'translate(-50%, -50%)',
-    borderRadius: "1rem",
-    border: "none",
-  },
-};
-const timeout: number = 2500;
 
 export const Signup = (): JSX.Element => {
-  const { data, handleInputChange, resetForm } = useForm<SignUp>(initialValue);
-  const { setUserData, loading, response } = useAuthUser ({ url: "/auth/signup" });
-  const { modalIsOpen, openModal, closeModal, modalOpenCounter, incrementModalOpenCounter } = useModal();
+  const { formData, handleInputChange, resetForm } = useForm<SignUp>(initialValue);
+  const { modalIsOpen, openModal, closeModal } = useModal();
+  const [signUp, { data: signUpResponse, isLoading, isError, error }] = useSignUpMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     
-    setUserData(data);
     openModal();
-    incrementModalOpenCounter();
+
+    try {
+      await signUp(formData).unwrap();
+    } catch (error: any) {
+      console.log(error);
+    };
   };
-
+  
   useEffect((): (() => void) | undefined => {
-    if (loading || !response) return;
-
-    const { status, data } = response;
-    const { token, user} = data;
-
+    if (!signUpResponse && !isError) return;
+    
     const timer = setTimeout((): void => {
-      if ((status !== "CREATED") && (modalOpenCounter > 0)) {
-        closeModal();
-        return;
-      };
-      
-      if (token) {
+      closeModal();
+
+      const { status, data } = signUpResponse as APIResponse<UserLogged>;
+      if (status === "CREATED") {
+        const { user, token } = data as UserLogged;
+        
+        dispatch(login({ isAuthenticated: true, user, token }));
         resetForm();
-        closeModal();
-        dispatch(login({
-          isAuthenticated: true,
-          user,
-          token,
-        }));
 
         switch (user.role) {
           case "client":
@@ -71,11 +52,11 @@ export const Signup = (): JSX.Element => {
             break;
         };
       };
-    }, timeout);
+    }, TIMEOUT_TO_CLOSE_MODAL);
 
     return (): void => clearTimeout(timer);
-  }, [loading, response, modalOpenCounter]);
-
+  }, [signUpResponse, isError]);
+  
   return (
     <div className="mx-auto w-full md:w-[768px] lg:w-[1024px] xl:w-[1280px] flex flex-col items-center">
       <header className="p-2 w-full flex justify-start">
@@ -94,10 +75,10 @@ export const Signup = (): JSX.Element => {
                 name="firstName"
                 id="firstName"
                 placeholder="E.g: Kevin"
-                className={`w-full p-2 text-black border-1 border-black outline-none rounded-lg ${loading && "border-gray-500 opacity-[50%] hover:cursor-not-allowed"}`}
+                className={`w-full p-2 text-black border-1 border-black outline-none rounded-lg ${isLoading && "border-gray-500 opacity-[50%] hover:cursor-not-allowed"}`}
                 onChange={handleInputChange}
-                value={data.firstName}
-                disabled={loading}
+                value={formData.firstName}
+                disabled={isLoading}
               />
             </label>
 
@@ -108,10 +89,10 @@ export const Signup = (): JSX.Element => {
                 name="lastName"
                 id="lastName"
                 placeholder="E.g: Reyes"
-                className={`w-full p-2 text-black border-1 border-black outline-none rounded-lg ${loading && "border-gray-500 opacity-[50%] hover:cursor-not-allowed"}`}
+                className={`w-full p-2 text-black border-1 border-black outline-none rounded-lg ${isLoading && "border-gray-500 opacity-[50%] hover:cursor-not-allowed"}`}
                 onChange={handleInputChange}
-                value={data.lastName}
-                disabled={loading}
+                value={formData.lastName}
+                disabled={isLoading}
               />
             </label>
 
@@ -122,10 +103,10 @@ export const Signup = (): JSX.Element => {
                 name="address"
                 id="address"
                 placeholder="E.g: 2th Street Carazo, Nicaragua."
-                className={`w-full p-2 text-black border-1 border-black outline-none rounded-lg ${loading && "border-gray-500 opacity-[50%] hover:cursor-not-allowed"}`}
+                className={`w-full p-2 text-black border-1 border-black outline-none rounded-lg ${isLoading && "border-gray-500 opacity-[50%] hover:cursor-not-allowed"}`}
                 onChange={handleInputChange}
-                value={data.address}
-                disabled={loading}
+                value={formData.address}
+                disabled={isLoading}
               />
             </label>
 
@@ -136,10 +117,10 @@ export const Signup = (): JSX.Element => {
                 name="phone"
                 id="phone"
                 placeholder="E.g: 88882525"
-                className={`w-full p-2 text-black border-1 border-black outline-none rounded-lg ${loading && "border-gray-500 opacity-[50%] hover:cursor-not-allowed"}`}
+                className={`w-full p-2 text-black border-1 border-black outline-none rounded-lg ${isLoading && "border-gray-500 opacity-[50%] hover:cursor-not-allowed"}`}
                 onChange={handleInputChange}
-                value={data.phone}
-                disabled={loading}
+                value={formData.phone}
+                disabled={isLoading}
               />
             </label>
 
@@ -150,10 +131,10 @@ export const Signup = (): JSX.Element => {
                 name="email"
                 id="email"
                 placeholder="E.g: kevin@gmail.com"
-                className={`w-full p-2 text-black border-1 border-black outline-none rounded-lg ${loading && "border-gray-500 opacity-[50%] hover:cursor-not-allowed"}`}
+                className={`w-full p-2 text-black border-1 border-black outline-none rounded-lg ${isLoading && "border-gray-500 opacity-[50%] hover:cursor-not-allowed"}`}
                 onChange={handleInputChange}
-                value={data.email}
-                disabled={loading}
+                value={formData.email}
+                disabled={isLoading}
               />
             </label>
 
@@ -164,18 +145,17 @@ export const Signup = (): JSX.Element => {
                 name="password"
                 id="password"
                 placeholder="E.g: ********"
-                className={`w-full p-2 text-black border-1 border-black outline-none rounded-lg ${loading && "border-gray-500 opacity-[50%] hover:cursor-not-allowed"}`}
+                className={`w-full p-2 text-black border-1 border-black outline-none rounded-lg ${isLoading && "border-gray-500 opacity-[50%] hover:cursor-not-allowed"}`}
                 onChange={handleInputChange}
-                value={data.password}
-                disabled={loading}
+                disabled={isLoading}
               />
             </label>
 
             <input
               type="submit"
               value="Register"
-              className={`col-span-1 col-start-1 col-end-2 md:col-start-2 md:col-end-3 w-full p-2 text-lg text-white font-bold bg-red-500 rounded-full hover:cursor-pointer ${loading && "opacity-[50%] hover:cursor-not-allowed"}`}
-              disabled={loading}
+              className={`col-span-1 col-start-1 col-end-2 md:col-start-2 md:col-end-3 w-full p-2 text-lg text-white font-bold bg-red-500 rounded-full hover:cursor-pointer ${isLoading && "opacity-[50%] hover:cursor-not-allowed"}`}
+              disabled={isLoading}
             />
           </form>
 
@@ -197,18 +177,21 @@ export const Signup = (): JSX.Element => {
       >
         <div className="p-4 md:p-8 w-[350px] md:w-[600px] flex flex-col justify-center items-center">
           {
-            loading
-              ? (<Loader />)
+            isLoading
+              ? (<Loader className="w-[42px] h-[42px] md:w-[44px] md:h-[44px] border-3 md:border-5 border-white border-l-red-500 border-b-red-500" />)
               : (
-                <div className="flex flex-col justify-center items-center gap-y-4">
-                  {
-                    (response?.status !== "CREATED")
-                      ? (<img src="assets/icons/error.svg" className="w-[48px] md:w-[54px] object-contain" />)
-                      : (<img src="assets/icons/check.svg" className="w-[48px] md:w-[54px] object-contain" />)
+                  <div className="flex flex-col justify-center items-center gap-y-4">
+                    {
+                      (signUpResponse?.status !== "CREATED")
+                        ? (<img src="assets/icons/error.svg" className="w-[48px] md:w-[54px] object-contain" />)
+                        : (<img src="assets/icons/check.svg" className="w-[48px] md:w-[54px] object-contain" />)
                     }
-                  
-                  <h2 className="text-lg md:text-xl text-center">{response?.data.msg}</h2>
-                </div>
+
+                    <h2 className="text-lg md:text-xl text-center">
+                      {isError && showErrorMessage(error as any)}
+                      {signUpResponse?.data?.msg}
+                    </h2>
+                  </div>
               )
           }
         </div>
