@@ -1,4 +1,4 @@
-import { User } from "./modelTypes";
+import { User } from "../";
 
 /* Sign in. */
 export interface SignIn extends Pick<User, 'email' | 'password'> { };

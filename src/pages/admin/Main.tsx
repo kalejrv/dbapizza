@@ -1,9 +1,10 @@
-import { Overview } from "../../components";
+import { Overview, RecentOrders } from "../../components";
 
 export const Main = (): JSX.Element => {
   return (
-    <div>
+    <>
       <Overview />
-    </div>
+      <RecentOrders />
+    </>
   );
 };

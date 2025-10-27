@@ -72,7 +72,7 @@ export const OverviewCard = ({ name, loading, totalItems, growthRate, currentMon
         
         { 
           loading
-            ? (<Loader className="w-8 h-8 border-3 border-white border-b-red-500 rounded-full" />)
+            ? (<Loader size={8} width={3} />)
             : (<p className="text-4xl text-gray-700 font-bold">{totalItems}</p>)
         }
       </div>
@@ -80,7 +80,7 @@ export const OverviewCard = ({ name, loading, totalItems, growthRate, currentMon
       {
         loading
           ? (
-            <Loader className="w-14 h-14 border-5 border-white border-b-red-500 rounded-full"/>
+            <Loader size={14} width={5}/>
           )
           : (
             <div className="flex flex-col items-end justify-between">

@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { AppNavbar, Sidebar } from "../../components";
+import "./dashboard.css";
 
 export const Dasboard = (): JSX.Element => {
   return (
@@ -13,7 +14,7 @@ export const Dasboard = (): JSX.Element => {
           <AppNavbar />
         </div>
 
-        <main className="mt-[77px] h-[calc(100%-77px)] p-4 bg-gray-50">
+        <main className="mt-[77px] h-[calc(100%-77px)] p-4 bg-gray-50 overflow-y-scroll scrollbar">
           <Outlet />
         </main>
       </div>

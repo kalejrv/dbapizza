@@ -15,5 +15,5 @@ export const showErrorMessage = (error: unknown): string => {
   /* Case 2: generic JS error. */
   if (error instanceof Error) return error.message;
 
-  return "An error has happen";
+  return "An error has happen.";
 };

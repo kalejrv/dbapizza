@@ -1,4 +1,5 @@
-import { HOC } from "./globalTypes";
-
 /* Loader. */
-export interface LoaderProps extends Pick<HOC, 'className'> { };
+export interface LoaderProps {
+  size: number | string;
+  width: number | string;
+};

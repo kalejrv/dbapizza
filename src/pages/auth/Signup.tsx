@@ -9,7 +9,7 @@ import { useForm, useModal } from "../../hooks";
 import { Loader } from "../../components";
 import { showErrorMessage } from "../../helpers";
 
-const initialValue: SignUp = { firstName: "", lastName: "", address: "", phone: "", email: "", password: ""  };
+const initialValue: SignUp = {} as SignUp;
 
 export const Signup = (): JSX.Element => {
   const { formData, handleInputChange, resetForm } = useForm<SignUp>(initialValue);
@@ -43,7 +43,7 @@ export const Signup = (): JSX.Element => {
         dispatch(login({ isAuthenticated: true, user, token }));
         resetForm();
 
-        switch (user.role) {
+        switch (user.role as string) {
           case "client":
             navigate("/pizzas");
             break;
@@ -178,7 +178,7 @@ export const Signup = (): JSX.Element => {
         <div className="p-4 md:p-8 w-[350px] md:w-[600px] flex flex-col justify-center items-center">
           {
             isLoading
-              ? (<Loader className="w-[42px] h-[42px] md:w-[44px] md:h-[44px] border-3 md:border-5 border-white border-l-red-500 border-b-red-500" />)
+              ? (<Loader size="[42px]" width={5} />)
               : (
                   <div className="flex flex-col justify-center items-center gap-y-4">
                     {

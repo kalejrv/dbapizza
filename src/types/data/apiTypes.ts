@@ -43,14 +43,3 @@ export interface Stats extends Pick<QueryParams, 'year' | 'month'> {
   };
 };
 export interface StatsQueryParams extends Pick<QueryParams, 'year' | 'month'> { };
-
-/* Models stats. */
-export interface UserStats extends Stats { };
-export interface OrderStats extends Stats {
-  sales: {
-    currentMonthSalesAmount: number,
-    lastMonthSalesAmount: number,
-    salesGrowthRate: number,
-    totalSalesAmount: number,
-  };
-};

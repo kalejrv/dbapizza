@@ -1,5 +1,4 @@
-import { APIResponse, Pizza } from "../data";
-import { UseHook } from "./useHookTypes";
+import { APIResponse, Pizza, UseHook } from "../";
 
 export interface UseGetPizzaProps {
   id: string;

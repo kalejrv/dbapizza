@@ -1,5 +1,4 @@
-import { Pizza } from "../data";
-import { HOC } from "./globalTypes";
+import { HOC, Pizza } from "../";
 
 /* Navbar menu. */
 export type MenuIsOpen = boolean;

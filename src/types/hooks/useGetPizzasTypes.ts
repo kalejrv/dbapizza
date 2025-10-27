@@ -1,5 +1,4 @@
-import { APIResponse, Pagination, Pizza, QueryParams } from "../data";
-import { UseHook } from "./useHookTypes";
+import { APIResponse, Pagination, Pizza, QueryParams, UseHook } from "../";
 
 export interface UseGetPizzasProps extends Pick<QueryParams, 'page' | 'limit'> { };
 
