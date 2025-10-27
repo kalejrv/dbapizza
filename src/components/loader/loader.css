@@ -1,7 +1,6 @@
 .loader {
   box-sizing: border-box;
   display: inline-block;
-  border-style: dotted;
   border-color: #fff;
   border-radius: calc(infinity * 1px);
   animation: rotation 1s linear infinite;

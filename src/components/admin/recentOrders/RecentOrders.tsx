@@ -5,7 +5,7 @@ import { SectionCard } from "../SectionCard";
 import { SectionHeading } from "../SectionHeading";
 
 export const RecentOrders = (): JSX.Element => {
-  const { data: ordersResponse, isLoading } = useGetOrdersQuery();
+  const { data: ordersResponse, isLoading } = useGetOrdersQuery({ page: 1, limit: 10});
   const items: Order[] = ordersResponse?.data?.items ?? [];
   
   return (
@@ -29,7 +29,7 @@ export const RecentOrders = (): JSX.Element => {
         {
           isLoading && (
             <div className="w-full p-6 flex justify-center items-center">
-              <Loader size={14} width={5} />
+              <Loader size="lg" width={5} color="red" style="dotted" />
             </div>
           )
         }

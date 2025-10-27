@@ -72,16 +72,14 @@ export const OverviewCard = ({ name, loading, totalItems, growthRate, currentMon
         
         { 
           loading
-            ? (<Loader size={8} width={3} />)
+            ? (<Loader size="sm" width={3} color="red" style="dotted" />)
             : (<p className="text-4xl text-gray-700 font-bold">{totalItems}</p>)
         }
       </div>
       
       {
         loading
-          ? (
-            <Loader size={14} width={5}/>
-          )
+          ? (<Loader size="lg" width={5} color="red" style="dotted" />)
           : (
             <div className="flex flex-col items-end justify-between">
               <div className="flex flex-col items-end">

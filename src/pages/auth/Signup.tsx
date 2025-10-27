@@ -178,7 +178,7 @@ export const Signup = (): JSX.Element => {
         <div className="p-4 md:p-8 w-[350px] md:w-[600px] flex flex-col justify-center items-center">
           {
             isLoading
-              ? (<Loader size="[42px]" width={5} />)
+              ? (<Loader size="md" width={5} color="red" style="dotted" />)
               : (
                   <div className="flex flex-col justify-center items-center gap-y-4">
                     {

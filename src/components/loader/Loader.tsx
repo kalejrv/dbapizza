@@ -1,9 +1,16 @@
-import { LoaderProps } from "../../types";
+import { loaderColor, LoaderProps, loaderSize, loaderStyle, loaderWidth } from "../../types";
 import "./loader.css";
 
-export const Loader = ({ size, width }: LoaderProps): JSX.Element => {
+export const Loader = ({ size, width, color, style }: LoaderProps): JSX.Element => {
   return (
-    <div className={`loader w-${size} h-${size} border-${width} border-b-red-500! border-l-red-500!`}>
+    <div
+      className={`
+        loader
+        ${loaderSize[size]}
+        ${loaderWidth[width]}
+        ${loaderColor[color]}
+        ${loaderStyle[style as string]}
+    `}>
     </div>
   );
 };
