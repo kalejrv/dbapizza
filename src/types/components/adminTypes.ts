@@ -1,4 +1,4 @@
-import { HOC } from "../";
+import { DeliveryType, HOC, Order, OrderItem, StatusOption } from "../";
 
 /* Sidebar. */
 export interface SidebarLinkProps extends HOC {
@@ -27,7 +27,7 @@ export interface SectionHeadingProps extends Pick<HOC, 'className'> {
 export interface SectionCardProps extends HOC { };
 
 /* Recent orders. */
-export const statusColor: Record<string, string> = {
+export const statusColor: Record<StatusOption, string> = {
   "Pending": "text-yellow-600 bg-yellow-100",
   "Preparing": "text-blue-600 bg-blue-100",
   "Done": "text-teal-600 bg-teal-100",
@@ -38,4 +38,25 @@ export const statusColor: Record<string, string> = {
 export const deliveryTypeColor: Record<string, string> = {
   "Delivery": "text-fuchsia-600 bg-fuchsia-100",
   "PickUp": "text-sky-600 bg-sky-100",
+};
+
+/* Order details. */
+export interface OrderDetailsProps {
+  order: Order;
+  closeModal(): void;
+};
+
+/* Status history icon. */
+export type StatusHistoryIconProps = {
+  name: StatusOption;
+};
+
+/* Delivery type icon. */
+export type DeliveryTypeIconProps = {
+  type: DeliveryType;
+};
+
+/* Order items detail. */
+export type OrderItemsDetailProps = {
+  items: OrderItem[];
 };

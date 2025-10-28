@@ -9,8 +9,9 @@ export const Loader = ({ size, width, color, style }: LoaderProps): JSX.Element 
         ${loaderSize[size]}
         ${loaderWidth[width]}
         ${loaderColor[color]}
-        ${loaderStyle[style as string]}
-    `}>
+        ${loaderStyle[style]}
+      `}
+    >
     </div>
   );
 };

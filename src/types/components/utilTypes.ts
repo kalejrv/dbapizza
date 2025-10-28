@@ -31,5 +31,5 @@ export interface LoaderProps {
   size: LoaderSize;
   width: LoaderWidth;
   color: LoaderColor;
-  style?: LoaderStyle;
+  style: LoaderStyle;
 };

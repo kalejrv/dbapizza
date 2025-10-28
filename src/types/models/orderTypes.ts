@@ -1,14 +1,15 @@
-import { Pizza, Size, Stats, Status, User } from "../";
+import { Pizza, Size, Stats, Status, StatusOption, Topping, User } from "../";
 
 /* User. */
 export type OrderUser = Pick<User, "firstName" | "lastName" | "address" | "phone" | "email">;
 
 /* Item. */
 export type OrderItem = {
-  pizza: Pizza | string;
-  selectedSize: Size | string;
+  _id: string;
+  pizza: Pizza;
+  selectedSize: Size;
   extra?: {
-    toppings: string[],
+    toppings: Topping[],
     total: number,
   };
   quantity: number;
@@ -16,18 +17,16 @@ export type OrderItem = {
 };
 
 /* Delivery. */
-export enum DeliveryType {
-  Delivery = "Delivery",
-  PickUp = "PickUp",
-};
+export type DeliveryType = "Delivery" | "PickUp";
 export type OrderDelivery = {
   type: DeliveryType;
   estimatedTime: number;
 };
 
 /* Status history. */
-export interface OrderStatusHistory extends Pick<Status, "name"> {
-  timestamp: Date,
+export interface OrderStatusHistory {
+  name: StatusOption;
+  timestamp: Date;
 };
 
 export type Order = {
@@ -40,6 +39,7 @@ export type Order = {
   statusHistory: OrderStatusHistory[];
   notes?: string;
   total: number;
+  createdAt: string;
 };
 
 export interface OrderStats extends Stats {

@@ -9,7 +9,10 @@ import { useForm, useModal } from "../../hooks";
 import { Loader } from "../../components";
 import { showErrorMessage } from "../../helpers";
 
-const initialValue: SignIn = {} as SignIn;
+const initialValue: SignIn = {
+  email: "",
+  password: "",
+};
 
 export const Signin = (): JSX.Element => {
   const { formData, handleInputChange, resetForm } = useForm<SignIn>(initialValue);
