@@ -1,16 +1,32 @@
-import { useGetOrdersQuery } from "../../../state/services";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Order } from "../../../types";
+import { useGetOrdersQuery } from "../../../state/services";
 import { Loader, SectionCard, SectionHeading } from "../../";
 import { RecentOrdersItem } from "./RecentOrdersItem";
+import { RecentOrdersSearchBar } from "./RecentOrdersSearchBar";
 
 export const RecentOrders = (): JSX.Element => {
   const { data: ordersResponse, isLoading } = useGetOrdersQuery({ page: 1, limit: 10});
   const items: Order[] = ordersResponse?.data?.items ?? [];
+  const [ordersByCode, setOrdersByCode] = useState<Order[]>([]);
+
+  const [searchParams] = useSearchParams();
+  const query: string = searchParams.get("recentOrdersCode") || "";
+
+  useEffect((): void => {
+    const orders = items.filter((item): boolean => item.code.includes(query));
+    setOrdersByCode(orders);
+  }, [query]);
   
   return (
     <SectionCard className="mt-4 p-0!">
-      <SectionHeading heading="Recent orders" className="p-4"/>
-      
+      <div className="mb-4 p-4 w-full flex justify-between items-center">
+        <SectionHeading heading="Recent orders" className="mb-0!" />
+
+        <RecentOrdersSearchBar disabled={isLoading}/>
+      </div>
+
       <table className="block">
         <thead className="block bg-gray-50">
           <tr className="p-3 grid grid-cols-15">
@@ -39,9 +55,29 @@ export const RecentOrders = (): JSX.Element => {
 
         <tbody className="block divide-y divide-gray-200">
           {
-            items.map((order: Order): JSX.Element => (
-              <RecentOrdersItem key={order._id} {...order} />
-            ))
+            (!query) && (
+              items.map((order: Order): JSX.Element => (
+                <RecentOrdersItem key={order._id} {...order} />
+              ))
+            )
+          }
+          
+          {
+            ((query.length > 0) && (ordersByCode.length > 0)) && (
+              ordersByCode.map((order: Order): JSX.Element => (
+                <RecentOrdersItem key={order._id} {...order} />
+              ))
+            )
+          }
+           
+          {
+            (!isLoading && (query.length > 0) && (ordersByCode.length === 0)) && (
+              <tr className="p-6 flex justify-center items-center rounded-b-2xl">
+                <td>
+                  <p className="text-gray-700">There aren't orders with code: "{query}".</p>
+                </td>
+              </tr>
+            )
           }
         </tbody>
       </table>

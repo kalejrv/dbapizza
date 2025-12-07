@@ -44,13 +44,14 @@ export const router = createBrowserRouter([
     element: <AdminProtectedRoute />,
     children: [
       {
+        id: "dashboard-route",
         path: "/admin/dashboard",
         element: <Dasboard />,
         children: [
           {
             index: true,
-            element: <Main />
-          }
+            element: <Main />,
+          },
         ]
       },
     ],

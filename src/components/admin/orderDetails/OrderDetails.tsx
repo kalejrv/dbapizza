@@ -1,12 +1,12 @@
+import { FC } from "react";
+import { OrderDetailsProps, OrderStatusHistory, Status, statusColor } from "../../../types";
 import { formatDate, formatHour } from "../../../helpers";
-import { OrderDetailsProps, OrderStatusHistory, Status, statusColor } from "../../../types"
-import { SectionCard } from "../SectionCard";
-import { SectionHeading } from "../SectionHeading";
-import { DeliveryTypeIcon } from "./DeliveryTypeIcon";
+import { SectionCard, SectionHeading } from "../../";
 import { OrderItemsDetail } from "./OrderItemsDetail";
+import { DeliveryTypeIcon } from "./DeliveryTypeIcon";
 import { StatusHistoryIcon } from "./StatusHistoryIcon";
 
-export const OrderDetails = ({order, closeModal}: OrderDetailsProps): JSX.Element => {
+export const OrderDetails: FC<OrderDetailsProps> = ({ order, closeModal }): JSX.Element => {
   const { code, user, items, delivery, status, statusHistory, notes, total, createdAt } = order;
 
   return (

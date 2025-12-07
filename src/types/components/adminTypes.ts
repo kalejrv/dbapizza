@@ -60,3 +60,13 @@ export type DeliveryTypeIconProps = {
 export type OrderItemsDetailProps = {
   items: OrderItem[];
 };
+
+/* Search bar. */
+export type SearchBarProps = {
+  placeholder?: string;
+  disabled: boolean;
+  value: string;
+  onChange(value: string): void;
+  onClear(): void;
+};
+export interface RecentOrdersSearchBarProps extends Pick<SearchBarProps, "disabled"> { };

@@ -6,3 +6,8 @@ export interface AuthState {
   user: Omit<User, 'password'> | null;
   token: string | null;
 };
+
+/* Search bar state. */
+export type SearchState = {
+  query: string;
+};
