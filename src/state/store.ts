@@ -1,9 +1,22 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./slices/authSlice";
+import { authSlice, searchSlice } from "./slices";
+import { authApi, orderApi, pizzaApi, userApi } from "./services";
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
+    auth: authSlice.reducer,
+    search: searchSlice.reducer,
+    [authApi.reducerPath]: authApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
+    [pizzaApi.reducerPath]: pizzaApi.reducer,
+    [orderApi.reducerPath]: orderApi.reducer,
+  },
+  middleware: (getDefaultMiddleware) => {
+    return getDefaultMiddleware()
+      .concat(authApi.middleware)
+      .concat(userApi.middleware)
+      .concat(pizzaApi.middleware)
+      .concat(orderApi.middleware);
   },
 });
 

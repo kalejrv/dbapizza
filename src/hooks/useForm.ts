@@ -1,24 +1,24 @@
 import { useState } from "react";
 import { UseForm } from "../types";
 
-export const useForm = <T>(initialValue: T): UseForm<T> => {
-  const [data, setData] = useState<typeof initialValue>(initialValue);
+export const useForm = <T>(initialState: T): UseForm<T> => {
+  const [formData, setFormData] = useState<typeof initialState>(initialState);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = event.target;
     
-    setData({
-      ...data,
+    setFormData({
+      ...formData,
       [name]: value,
     });
   };
 
   const resetForm = (): void => {
-    setData(initialValue);
+    setFormData(initialState);
   };
   
   return {
-    data,
+    formData,
     handleInputChange,
     resetForm,
   };
