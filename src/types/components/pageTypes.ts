@@ -1,16 +1,13 @@
-import { ReactNode } from "react";
-import { Pizza } from "./APITypes";
+import { HOC, Pizza } from "../";
 
-/* Mobile menu. */
+/* Navbar menu. */
 export type MenuIsOpen = boolean;
-
-/* Hamburger menu. */
 export interface HamburgerMenuProps {
   menuIsOpen: MenuIsOpen;
   handleClick: () => void;
 };
 
-/* Pages. */
+/* Page. */
 export type Page = {
   url: string;
   name: string;
@@ -33,12 +30,6 @@ export const pages: Page[] = [
     name: "Contact",
   },
 ];
-
-/* Global component props. */
-interface HOC {
-  className?: string;
-  children: ReactNode;
-};
 
 /* Navigation link. */
 export interface NavigationLinkProps extends HOC {
