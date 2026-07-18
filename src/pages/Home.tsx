@@ -7,7 +7,7 @@ export const Home = (): JSX.Element => {
   const { items } = response.data;
 
   return (
-    <div className="mx-auto w-full md:w-[768px] lg:w-[1024px] xl:w-[1280px]">
+    <div className="mx-auto w-full md:w-3xl lg:w-5xl xl:w-7xl">
       <header className="w-full flex flex-col items-center overflow-hidden">
         <Navbar />
 
